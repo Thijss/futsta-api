@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 
-from app.routers import items
+from app.routers import goals, stats, matches, opponents, players
 from app.settings.api import get_api_settings
 
 
@@ -12,7 +12,12 @@ def get_app() -> FastAPI:
     """Create the FastAPI application."""
     api_settings = get_api_settings()
     server = FastAPI(title=api_settings.project_name, debug=api_settings.debug)
-    server.include_router(items.router, prefix="/items")
+
+    server.include_router(goals.router, prefix="/goals")
+    server.include_router(stats.router, prefix="/stats")
+    server.include_router(matches.router, prefix="/matches")
+    server.include_router(opponents.router, prefix="/opponents")
+    server.include_router(players.router, prefix="/players")
 
     server.add_middleware(
         CORSMiddleware,

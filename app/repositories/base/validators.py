@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from app.exceptions import AlreadyExistsError
 
 if TYPE_CHECKING:
-    from ._base import JsonRepository
+    from app.repositories.base.repo import JsonRepository
 
 
 def assert_in(repo: "JsonRepository", asset: BaseModel):

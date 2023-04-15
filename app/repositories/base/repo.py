@@ -6,7 +6,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from app.repositories._validators import assert_in
+from app.repositories.base.validators import assert_in
 from app.s3 import S3AssetBucket
 from app.settings.repository import RepositorySettings, S3Access, get_repo_settings
 from app.utils import BASE_DIR

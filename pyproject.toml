@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "lambda-api-template"
+name = "futsta-api"
 version = "1.0.0"
 description = ""
 authors = ["Thijs Baaijen <Thijss@users.noreply.github.com>"]
