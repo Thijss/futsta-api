@@ -32,12 +32,7 @@ class StatRepository(BaseModel):
                 player_counts[player] = 0
 
         counter_class = cls.get_counter_class(count_type)
-        repo = cls(
-            stats=[
-                counter_class(player=player, count=count)
-                for player, count in player_counts.items()
-            ]
-        )
+        repo = cls(stats=[counter_class(player=player, count=count) for player, count in player_counts.items()])
         repo.stats = sorted(repo.stats, key=lambda stat: stat.count, reverse=True)
         return repo
 

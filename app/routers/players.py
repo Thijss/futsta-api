@@ -20,5 +20,5 @@ async def add_player(player: Player):
 
 @router.get("", dependencies=[Depends(api_key_read_access_auth)])
 async def list_players():
-    players =  PlayerRepository.load().assets
+    players = PlayerRepository.load().assets
     return sorted(players, key=lambda player: player.name)

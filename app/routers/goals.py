@@ -9,8 +9,13 @@ from app.repositories.base.validators import assert_not_in
 from app.repositories.matches import MatchRepository
 from app.repositories.players import PlayerRepository
 from app.models.goals import Goal
-from app.repositories.goals import GoalRepository, validate_goal_for_away_match, validate_goal_for_home_match, \
-    validate_is_last_goal, validate_subsequent_goal
+from app.repositories.goals import (
+    GoalRepository,
+    validate_goal_for_away_match,
+    validate_goal_for_home_match,
+    validate_is_last_goal,
+    validate_subsequent_goal,
+)
 
 router = APIRouter()
 

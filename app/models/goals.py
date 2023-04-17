@@ -13,6 +13,7 @@ class CountType(str, Enum):
     GOAL = "goal"
 
 
+# noinspection PyMethodParameters
 class Score(BaseModel):
     home: int
     away: int
@@ -21,9 +22,9 @@ class Score(BaseModel):
     def order(self) -> int:
         return self.home + self.away
 
-    @validator('home')
+    @validator("away")
     def validate_score(cls, value, values):
-        if value == 0 and values.get("away") == 0:
+        if value == 0 and values.get("home") == 0:
             raise ValueError("Invalid score '0-0'")
         return value
 
@@ -31,6 +32,7 @@ class Score(BaseModel):
         return f"{self.home}-{self.away}"
 
 
+# noinspection PyMethodParameters
 class Goal(BaseModel):
     match_date: date
     scored_by: Optional[Player] = None
@@ -51,26 +53,26 @@ class Goal(BaseModel):
 
     def dict(self, *args, **kwargs):
         serialized = super().dict(*args, **kwargs)
-        serialized['is_team_goal'] = self.is_team_goal
-        serialized['order'] = self.order
+        serialized["is_team_goal"] = self.is_team_goal
+        serialized["order"] = self.order
         return serialized
 
-    @validator('scored_by', "assisted_by", pre=True)
+    @validator("scored_by", "assisted_by", pre=True)
     def parse_player_name(cls, value):
         if isinstance(value, str):
             return Player(name=value)
         return value
 
-    @validator('assisted_by')
-    def validate_assisted_by(cls, value, values):
-        if value and not values.get('scored_by'):
-            raise ValueError("Cannot have an assist without a goal scorer")
+    @validator("score", pre=True)
+    def parse_score(cls, value):
+        if isinstance(value, str):
+            return Score(*value.split("-"))
         return value
 
-    @validator('score')
-    def validate_score(cls, value):
-        if isinstance(value, str):
-            return Score(**value.split("-"))
+    @validator("assisted_by")
+    def validate_assisted_by(cls, value, values):
+        if value and not values.get("scored_by"):
+            raise ValueError("Cannot have an assist without a goal scorer")
         return value
 
     def __eq__(self, other):
@@ -78,7 +80,7 @@ class Goal(BaseModel):
         same_order = other.order == self.order
         return same_match and same_order
 
-    def __lt__(self, other: 'Goal') -> bool:
+    def __lt__(self, other: "Goal") -> bool:
         return self.order < other.order
 
     def __str__(self):
@@ -87,7 +89,7 @@ class Goal(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "match_date": datetime.now().strftime('%Y-%m-%d'),
+                "match_date": datetime.now().strftime("%Y-%m-%d"),
                 "scored_by": "Thijs",
                 "assisted_by": "Mark",
             }

@@ -1,6 +1,6 @@
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from app.models.opponents import Opponent
 
@@ -14,6 +14,12 @@ class Match(BaseModel):
     def is_away(self) -> bool:
         return not self.is_home
 
+    @validator("opponent", pre=True)
+    def parse_opponent_name(cls, value):
+        if isinstance(value, str):
+            return Opponent(name=value)
+        return value
+
     def __str__(self):
         return f"A match on {self.match_date.strftime('%Y-%m-%d')}"
 
@@ -21,7 +27,7 @@ class Match(BaseModel):
         return other == self.match_date
 
     def __lt__(self, other):
-        return other.match_date < self.match_date
+        return self.match_date < other.match_date
 
     @classmethod
     def dummy_from_match_date(cls, match_date: date):
