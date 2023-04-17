@@ -9,7 +9,12 @@ from app.models.goals import Goal, Score
 
 @pytest.fixture(name="goal")
 def goal_fixture():
-    return Goal(match_date=datetime.now().date(), scored_by="Thijs", assisted_by="Mark", score=Score(home=1, away=0))
+    return Goal(
+        match_date=datetime.now().date(),
+        scored_by="Thijs",
+        assisted_by="Mark",
+        score=Score(home=1, away=0),
+    )
 
 
 def test_goal_properties(goal):
@@ -21,19 +26,30 @@ def test_goal_properties(goal):
 
 def test_goal_equality(goal):
     assert goal == Goal(
-        match_date=datetime.now().date(), scored_by="Thijs", assisted_by="Mark", score=Score(home=1, away=0)
+        match_date=datetime.now().date(),
+        scored_by="Thijs",
+        assisted_by="Mark",
+        score=Score(home=1, away=0),
     )
 
 
 def test_goal_inequality(goal):
     assert goal != Goal(
-        match_date=datetime.now().date(), scored_by="John", assisted_by=None, score=Score(home=2, away=0)
+        match_date=datetime.now().date(),
+        scored_by="John",
+        assisted_by=None,
+        score=Score(home=2, away=0),
     )
 
 
 def test_goal_invalid_assist():
     with pytest.raises(ValueError):
-        Goal(match_date=datetime.now().date(), scored_by=None, assisted_by="Thijs", score=Score(home=1, away=0))
+        Goal(
+            match_date=datetime.now().date(),
+            scored_by=None,
+            assisted_by="Thijs",
+            score=Score(home=1, away=0),
+        )
 
 
 def test_goal_invalid_score():

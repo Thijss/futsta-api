@@ -19,7 +19,11 @@ async def list_matches():
     return matches
 
 
-@router.post("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    dependencies=[Depends(api_key_write_access_auth)],
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_match(match: Match):
     """Add a match."""
     try:
@@ -34,7 +38,11 @@ async def add_match(match: Match):
     return match
 
 
-@router.delete("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "",
+    dependencies=[Depends(api_key_write_access_auth)],
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def delete_match(match: Match):
     """Delete a match."""
     try:

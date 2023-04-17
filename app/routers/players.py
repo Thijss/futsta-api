@@ -10,7 +10,11 @@ from app.repositories.players import PlayerRepository
 router = APIRouter()
 
 
-@router.post("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    dependencies=[Depends(api_key_write_access_auth)],
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_player(player: Player):
     """Add a player."""
     repo = PlayerRepository.load()

@@ -27,7 +27,11 @@ async def get_by_match_date(match_date: date):
     return goals.get_by_match_date(match_date)
 
 
-@router.post("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    dependencies=[Depends(api_key_write_access_auth)],
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_goal(goal: Goal):
     """Add a goal."""
     player_repo = PlayerRepository.load()
