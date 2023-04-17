@@ -3,11 +3,23 @@
 from unittest.mock import patch
 
 import pytest
+from pydantic import BaseModel
 
-from app.models.items import Item
-from app.repositories.items import ItemRepository
+from app.repositories.base.repo import JsonRepository
 from app.settings.repository import RepositorySettings
 from app.utils import BASE_DIR
+
+
+class Dummy(BaseModel):
+    name: str
+    description: str
+
+
+class DummyRepository(JsonRepository):
+
+    class Config:
+        json_file_name="dummy.json",
+
 
 
 @pytest.fixture(name="repo")
