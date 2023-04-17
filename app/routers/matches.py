@@ -4,6 +4,7 @@ from starlette import status
 from app.auth import api_key_read_access_auth, api_key_write_access_auth
 from app.exceptions import AlreadyExistsError, NotFoundError
 from app.models.matches import Match
+from app.repositories.base.validators import assert_in
 from app.repositories.matches import MatchRepository
 from app.repositories.opponents import OpponentRepository
 
@@ -20,12 +21,12 @@ async def list_matches():
 @router.post("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_201_CREATED)
 async def add_match(match: Match):
     try:
-        OpponentRepository.load().assert_in(match.opponent)
+        assert_in(OpponentRepository.load(), match.opponent)
     except NotFoundError as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
 
     try:
-        MatchRepository.add(match)
+        MatchRepository.load().add(match)
     except AlreadyExistsError as error:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error))
     return match

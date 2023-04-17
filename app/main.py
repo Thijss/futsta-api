@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 
-from app.routers import goals, stats, matches, opponents, players
+from app.routers import goals, matches, opponents, players, stats
 from app.settings.api import get_api_settings
 
 

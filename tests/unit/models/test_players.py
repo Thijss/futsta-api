@@ -1,3 +1,6 @@
+"""Unit tests for the Player model."""
+# pylint: disable=missing-function-docstring
+
 from app.models.players import Player
 
 

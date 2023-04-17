@@ -3,8 +3,8 @@ from typing import Union
 from pydantic import BaseModel
 
 from app.models.goals import CountType
-from app.repositories.goals import GoalRepository
 from app.models.players import Player
+from app.repositories.goals import GoalRepository
 from app.repositories.players import PlayerRepository
 
 

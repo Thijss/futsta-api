@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
 from app.auth import api_key_read_access_auth
-from app.repositories.stats import StatRepository
 from app.models.goals import CountType
+from app.repositories.stats import StatRepository
 
 router = APIRouter()
 

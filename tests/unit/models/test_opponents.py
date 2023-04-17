@@ -1,3 +1,6 @@
+"""Unit tests for the Opponent model."""
+# pylint: disable=missing-function-docstring
+
 from app.models.opponents import Opponent
 
 

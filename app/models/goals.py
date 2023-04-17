@@ -32,7 +32,6 @@ class Score(BaseModel):
         return f"{self.home}-{self.away}"
 
 
-# noinspection PyMethodParameters
 class Goal(BaseModel):
     match_date: date
     scored_by: Optional[Player] = None
@@ -57,18 +56,21 @@ class Goal(BaseModel):
         serialized["order"] = self.order
         return serialized
 
+    @classmethod
     @validator("scored_by", "assisted_by", pre=True)
     def parse_player_name(cls, value):
         if isinstance(value, str):
             return Player(name=value)
         return value
 
+    @classmethod
     @validator("score", pre=True)
     def parse_score(cls, value):
         if isinstance(value, str):
             return Score(*value.split("-"))
         return value
 
+    @classmethod
     @validator("assisted_by")
     def validate_assisted_by(cls, value, values):
         if value and not values.get("scored_by"):

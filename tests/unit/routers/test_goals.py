@@ -1,4 +1,4 @@
-"""Test the items router."""
+"""Unit tests for the goals router."""
 # pylint: disable=missing-function-docstring
 import os
 from unittest.mock import patch

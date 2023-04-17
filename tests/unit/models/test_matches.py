@@ -1,5 +1,10 @@
+"""Unit tests for the Match model."""
+# pylint: disable=missing-function-docstring
+
 from datetime import date
+
 from pytest import raises
+
 from app.models.matches import Match
 from app.models.opponents import Opponent
 
@@ -46,8 +51,9 @@ def test_match_equality():
     is_home = True
     match1 = Match(match_date=match_date1, opponent=opponent, is_home=is_home)
     match2 = Match(match_date=match_date2, opponent=opponent, is_home=is_home)
-    assert match1 == match1
-    assert match2 == match2
+    match3 = Match(match_date=match_date1, opponent=opponent, is_home=is_home)
+
+    assert match1 == match3
     assert match1 != match2
     assert match2 != match1
 
@@ -68,4 +74,4 @@ def test_dummy_match():
     dummy_match = Match.dummy_from_match_date(match_date)
     assert dummy_match.match_date == match_date
     assert dummy_match.opponent.name == "dummy"
-    assert dummy_match.is_home == True
+    assert dummy_match.is_home is True
