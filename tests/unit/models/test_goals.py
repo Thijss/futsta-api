@@ -1,5 +1,5 @@
 """Unit tests for the goals model."""
-# pylint: disable=missing-function-docstring
+# pylint: disable=missing-function-docstring, duplicate-code
 from datetime import datetime
 
 import pytest
