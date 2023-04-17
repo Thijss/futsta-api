@@ -27,6 +27,7 @@ class Score(BaseModel):
         """Return the order of the score in the match"""
         return self.home + self.away
 
+    # pylint: disable=no-self-argument
     @validator("away")
     def validate_score(cls, value, values):
         """Validate the score"""
@@ -68,6 +69,7 @@ class Goal(BaseModel):
         serialized["order"] = self.order
         return serialized
 
+    # pylint: disable=no-self-argument
     @validator("scored_by", "assisted_by", pre=True)
     def parse_player_name(cls, value):
         """Parse a player name from a string or a Player object"""
@@ -75,6 +77,7 @@ class Goal(BaseModel):
             return Player(name=value)
         return value
 
+    # pylint: disable=no-self-argument
     @validator("score", pre=True)
     def parse_score(cls, value):
         """Parse a score from a string or a Score object"""
@@ -83,6 +86,7 @@ class Goal(BaseModel):
             return Score(home=home, away=away)
         return value
 
+    # pylint: disable=no-self-argument
     @validator("assisted_by")
     def validate_assisted_by(cls, value, values):
         """Validate that an assist is only given if there is a goal scorer"""

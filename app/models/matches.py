@@ -17,6 +17,7 @@ class Match(BaseModel):
         """Return True if the match is away"""
         return not self.is_home
 
+    # pylint: disable=no-self-argument
     @validator("opponent", pre=True)
     def parse_opponent_name(cls, value):
         """Parse opponent name"""
