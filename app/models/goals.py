@@ -89,7 +89,7 @@ class Goal(BaseModel):
     # pylint: disable=no-self-argument
     @validator("assisted_by")
     def validate_assisted_by(cls, value, values):
-        """Validate that an assist is only given if there is a goal scorer"""
+        """Validate that an assist is only given if there is a goalscorer"""
         if value and not values.get("scored_by"):
             raise ValueError("Cannot have an assist without a goal scorer")
         return value
