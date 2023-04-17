@@ -52,6 +52,10 @@ class GoalRepository(JsonRepository):
 
 def validate_goal_for_away_match(repo: GoalRepository, goal: Goal):
     same_left, same_right = _get_score_changes(repo, goal)
+    if same_left and same_right:
+        raise ValidationError("Invalid score: team and opponent scores cannot both stay the same")
+    if not same_left and not same_right:
+        raise ValidationError("Invalid score: team and opponent scores cannot both change")
     if goal.is_team_goal and same_right:
         raise ValidationError("Invalid score: team goal, so team score should increase")
     if goal.is_opponent_goal and same_left:
