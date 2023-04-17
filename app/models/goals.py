@@ -10,6 +10,7 @@ from app.utils import int_to_ordinal
 
 class CountType(str, Enum):
     """The type of count"""
+
     ASSIST = "assist"
     GOAL = "goal"
 
@@ -17,6 +18,7 @@ class CountType(str, Enum):
 # noinspection PyMethodParameters
 class Score(BaseModel):
     """A score"""
+
     home: int
     away: int
 
@@ -39,6 +41,7 @@ class Score(BaseModel):
 
 class Goal(BaseModel):
     """A goal scored in a match"""
+
     match_date: date
     scored_by: Optional[Player] = None
     assisted_by: Optional[Player] = None
@@ -104,6 +107,7 @@ class Goal(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "match_date": datetime.now().strftime("%Y-%m-%d"),

@@ -7,10 +7,12 @@ from app.repositories.base.repo import JsonRepository
 
 class MatchRepository(JsonRepository):
     """Repository for matches"""
+
     assets: list[Match] = []
 
     class Config:
         """Pydantic configuration"""
+
         json_file_name = "matches.json"
 
     def get_by_match_date(self, match_date: date) -> Match:

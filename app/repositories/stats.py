@@ -20,6 +20,7 @@ class _AssistStat(BaseModel):
 
 class StatRepository(BaseModel):
     """A repository of stats"""
+
     stats: list[Union[_GoalStat, _AssistStat]]
 
     @classmethod

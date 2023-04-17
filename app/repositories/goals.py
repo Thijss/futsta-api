@@ -9,10 +9,12 @@ from app.repositories.base.repo import JsonRepository
 
 class GoalRepository(JsonRepository):
     """Repository for goals"""
+
     assets: list[Goal] = []
 
     class Config:
         """Pydantic configuration"""
+
         json_file_name = "goals.json"
 
     def get_next_score(self, goal: Goal, match: Match) -> Score:

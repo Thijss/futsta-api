@@ -7,6 +7,7 @@ from app.models.opponents import Opponent
 
 class Match(BaseModel):
     """A match"""
+
     match_date: date
     opponent: Opponent
     is_home: bool

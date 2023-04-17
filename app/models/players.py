@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class Player(BaseModel):
     """A player."""
+
     name: str
 
     def __hash__(self):

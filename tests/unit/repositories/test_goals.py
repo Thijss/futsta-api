@@ -8,10 +8,12 @@ import pytest
 
 from app.exceptions import ValidationError
 from app.models.goals import Goal, Score
-from app.repositories.goals import (validate_goal_for_away_match,
-                                    validate_goal_for_home_match,
-                                    validate_is_last_goal,
-                                    validate_subsequent_goal)
+from app.repositories.goals import (
+    validate_goal_for_away_match,
+    validate_goal_for_home_match,
+    validate_is_last_goal,
+    validate_subsequent_goal,
+)
 
 
 @pytest.fixture(name="home_goal")
