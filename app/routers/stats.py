@@ -9,9 +9,11 @@ router = APIRouter()
 
 @router.get("/top_assists", dependencies=[Depends(api_key_read_access_auth)])
 async def top_assists():
+    """Get the top assists"""
     return StatRepository.from_goals(count_type=CountType.ASSIST).stats
 
 
 @router.get("/top_goals", dependencies=[Depends(api_key_read_access_auth)])
 async def top_goals():
+    """Get the top goals"""
     return StatRepository.from_goals(count_type=CountType.GOAL).stats

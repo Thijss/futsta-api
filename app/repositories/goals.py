@@ -8,12 +8,15 @@ from app.repositories.base.repo import JsonRepository
 
 
 class GoalRepository(JsonRepository):
+    """Repository for goals"""
     assets: list[Goal] = []
 
     class Config:
+        """Pydantic configuration"""
         json_file_name = "goals.json"
 
     def get_next_score(self, goal: Goal, match: Match) -> Score:
+        """Return the score after the goal is scored"""
         match_goals = self.get_by_match_date(goal.match_date)
         if match_goals:
             previous_score = max(match_goals).score
@@ -35,9 +38,11 @@ class GoalRepository(JsonRepository):
         return next_score
 
     def get_by_match_date(self, match_date: date) -> list[Goal]:
+        """Return a list of goals scored in a match"""
         return [goal for goal in self.assets if goal.match_date == match_date]
 
     def get_player_counts(self, count_type: CountType) -> Counter:
+        """Return a counter of the number of goals or assists scored by each player"""
         if count_type is CountType.GOAL:
             attr = "scored_by"
         elif count_type is CountType.ASSIST:
@@ -51,6 +56,7 @@ class GoalRepository(JsonRepository):
 
 
 def validate_goal_for_away_match(repo: GoalRepository, goal: Goal):
+    """Validate that the goal is valid for an away match"""
     same_left, same_right = _get_score_changes(repo, goal)
     if same_left and same_right:
         raise ValidationError("Invalid score: team and opponent scores cannot both stay the same")
@@ -63,6 +69,7 @@ def validate_goal_for_away_match(repo: GoalRepository, goal: Goal):
 
 
 def validate_goal_for_home_match(repo: GoalRepository, goal: Goal):
+    """Validate that the goal is valid for a home match"""
     same_left, same_right = _get_score_changes(repo, goal)
     if goal.is_team_goal and same_left:
         raise ValidationError("Invalid score: team goal, so team score should increase")
@@ -71,6 +78,7 @@ def validate_goal_for_home_match(repo: GoalRepository, goal: Goal):
 
 
 def validate_subsequent_goal(repo: GoalRepository, goal: Goal):
+    """Validate that the goal is the next goal in the match"""
     match_goals = repo.get_by_match_date(goal.match_date)
     if goal.order == 1 and not match_goals:
         return
@@ -82,6 +90,7 @@ def validate_subsequent_goal(repo: GoalRepository, goal: Goal):
 
 
 def validate_is_last_goal(repo: GoalRepository, goal: Goal):
+    """Validate that the goal is the last goal in the match"""
     match_goals = repo.get_by_match_date(goal.match_date)
     if goal.order != len(match_goals):
         raise ValidationError("Not the last goal in the match")

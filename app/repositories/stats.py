@@ -19,10 +19,12 @@ class _AssistStat(BaseModel):
 
 
 class StatRepository(BaseModel):
+    """A repository of stats"""
     stats: list[Union[_GoalStat, _AssistStat]]
 
     @classmethod
     def from_goals(cls, count_type: CountType):
+        """Create a repository of stats from goals"""
         goals = GoalRepository.load()
         players = PlayerRepository.load().assets
         player_counts = goals.get_player_counts(count_type)
@@ -38,6 +40,7 @@ class StatRepository(BaseModel):
 
     @staticmethod
     def get_counter_class(count_type: CountType):
+        """Return the counter class for the given count type"""
         if count_type is CountType.GOAL:
             return _GoalStat
         if count_type is CountType.ASSIST:

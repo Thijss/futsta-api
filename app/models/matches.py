@@ -6,16 +6,20 @@ from app.models.opponents import Opponent
 
 
 class Match(BaseModel):
+    """A match"""
     match_date: date
     opponent: Opponent
     is_home: bool
 
     @property
     def is_away(self) -> bool:
+        """Return True if the match is away"""
         return not self.is_home
 
+    @classmethod
     @validator("opponent", pre=True)
     def parse_opponent_name(cls, value):
+        """Parse opponent name"""
         if isinstance(value, str):
             return Opponent(name=value)
         return value

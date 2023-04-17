@@ -6,12 +6,15 @@ from app.repositories.base.repo import JsonRepository
 
 
 class MatchRepository(JsonRepository):
+    """Repository for matches"""
     assets: list[Match] = []
 
     class Config:
+        """Pydantic configuration"""
         json_file_name = "matches.json"
 
     def get_by_match_date(self, match_date: date) -> Match:
+        """Return a match by match date"""
         if match_list := [match for match in self.assets if match.match_date == match_date]:
             assert len(match_list) == 1, f"Multiple matches found for {match_date}"
             return match_list[0]

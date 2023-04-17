@@ -12,14 +12,16 @@ router = APIRouter()
 
 @router.post("", dependencies=[Depends(api_key_write_access_auth)], status_code=status.HTTP_201_CREATED)
 async def add_opponent(opponent: Opponent):
+    """Add an opponent."""
     repo = OpponentRepository.load()
     try:
         repo.add(asset=opponent, validators=[assert_not_in])
     except AlreadyExistsError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error))
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
     return opponent
 
 
 @router.get("", dependencies=[Depends(api_key_read_access_auth)])
 async def list_opponents():
+    """List all opponents."""
     return OpponentRepository.load().assets
