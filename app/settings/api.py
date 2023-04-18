@@ -6,8 +6,6 @@ from typing import Any
 
 from pydantic import BaseSettings, SecretStr
 
-from app.settings._enums import SettingsProfile
-
 
 class HttpMethod(Enum):
     """HTTP methods."""

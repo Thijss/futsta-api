@@ -6,7 +6,10 @@ from app.models.matches import Match
 from app.repositories.base.validators import assert_not_in
 from app.repositories.matches.repo import MatchRepository
 from app.repositories.matches.validators import validate_opponent_exists
-from app.routers._helpers import add_or_raise_http_exception, remove_or_raise_http_exception
+from app.routers._helpers import (
+    add_or_raise_http_exception,
+    remove_or_raise_http_exception,
+)
 
 router = APIRouter()
 

@@ -9,10 +9,13 @@ from app.repositories.goals.repo import GoalRepository
 from app.repositories.goals.validators import (
     validate_involved_players,
     validate_is_last_goal,
-    validate_subsequent_goal,
     validate_score,
+    validate_subsequent_goal,
 )
-from app.routers._helpers import add_or_raise_http_exception, remove_or_raise_http_exception
+from app.routers._helpers import (
+    add_or_raise_http_exception,
+    remove_or_raise_http_exception,
+)
 
 router = APIRouter()
 

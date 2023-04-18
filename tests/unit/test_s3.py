@@ -1,7 +1,6 @@
 """Unit tests for the S3 module."""
 # pylint: disable=missing-function-docstring
 import os
-
 from unittest.mock import Mock, patch
 
 from app.s3 import S3AssetBucket

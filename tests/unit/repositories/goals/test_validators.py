@@ -10,8 +10,8 @@ from app.exceptions import ValidationError
 from app.models.goals import Goal, Score
 from app.repositories.goals import validators
 from app.repositories.goals.validators import (
-    validate_score,
     validate_is_last_goal,
+    validate_score,
     validate_subsequent_goal,
 )
 from app.repositories.matches.repo import MatchRepository
@@ -32,6 +32,7 @@ def test_validate_score_for_away_match_raises_error_both_change(away_repo, away_
         with pytest.raises(ValidationError) as error:
             validate_score(next_goal, away_repo)
     assert "team and opponent scores cannot both change" in str(error.value)
+
 
 def test_validate_score_for_away_match_raises_error_wrong_side(away_repo, away_match):
     next_goal = Goal(

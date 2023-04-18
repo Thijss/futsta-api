@@ -19,6 +19,7 @@ class _MyJsonRepo(JsonRepository):
     assets: list[_MyAsset] = []
 
     class Config:
+        """Pydantic config"""
         json_file_name = "test.json"
 
 
@@ -33,7 +34,7 @@ def test_save_and_load_with_asset(tmp_path):
     assert repo.assets == [_MyAsset(name="test")]
 
 
-def test_add_and_remove_asset(tmp_path):
+def test_add_and_remove_asset():
     """Test loading a json file."""
     repo = _MyJsonRepo()
     my_asset = _MyAsset(name="test")
@@ -41,10 +42,10 @@ def test_add_and_remove_asset(tmp_path):
     repo.add(my_asset)
     assert repo.assets == [my_asset]
     repo.remove(my_asset)
-    assert repo.assets == []
+    assert not repo.assets
 
 
-def test_remove_non_existing_asset(tmp_path):
+def test_remove_non_existing_asset():
     """Test loading a json file."""
     repo = _MyJsonRepo()
     my_asset = _MyAsset(name="test")

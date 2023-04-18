@@ -30,4 +30,3 @@ def test_get_by_match_date_authorized():
     with patch.dict(os.environ, {"api_key_read_access": "READ", "local_access": "True"}):
         response = client.get(f"{_GOALS_URL}2023-03-03", headers=headers)
     assert response.status_code == 200
-

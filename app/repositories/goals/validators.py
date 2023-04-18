@@ -2,8 +2,8 @@ from app.exceptions import ValidationError
 from app.models.goals import Goal, Score
 from app.repositories.base.validators import assert_in
 from app.repositories.goals.repo import GoalRepository
-from app.repositories.players import PlayerRepository
 from app.repositories.matches.repo import MatchRepository
+from app.repositories.players import PlayerRepository
 
 
 def validate_involved_players(goal, *_args):
