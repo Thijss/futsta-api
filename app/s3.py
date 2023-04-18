@@ -1,6 +1,5 @@
 """S3 bucket for assets"""
 import logging
-from pathlib import Path
 from typing import Optional
 
 import boto3
