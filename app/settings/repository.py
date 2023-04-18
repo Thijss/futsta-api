@@ -1,17 +1,10 @@
 """Repository settings."""
 import os
-from enum import Enum
 from functools import lru_cache
 
 from pydantic import BaseSettings
 
-
-class FileAccess(Enum):
-    """S3 access."""
-
-    NO_ACCESS = "no_access"
-    READ = "read"
-    WRITE = "write"
+from app.settings._enums import SettingsProfile
 
 
 class RepositorySettings(BaseSettings):
@@ -23,9 +16,9 @@ class RepositorySettings(BaseSettings):
         return os.linesep.join(lines)
 
     local_assets_dir: str = "assets"
-    local_access: FileAccess = FileAccess.NO_ACCESS
+    local_access: bool = False
     s3_assets_dir: str = "assets"
-    s3_access: FileAccess = FileAccess.NO_ACCESS
+    s3_access: bool = False
     s3_bucket_name: str = ""
 
     # pylint: disable=too-few-public-methods
@@ -37,13 +30,31 @@ class RepositorySettings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-def get_repo_settings() -> RepositorySettings:
-    """Get repository settings."""
-    if os.getenv("CACHE_SETTINGS"):
-        return _get_cached_settings()
-    return RepositorySettings()
+def get_repo_settings():
+    """Get API settings."""
+    if profile := os.getenv("SETTINGS_PROFILE"):
+        settings_profile = SettingsProfile(profile)
+    else:
+        return RepositorySettings()
+
+    if settings_profile in [SettingsProfile.AWS_LAMBDA_DEV, SettingsProfile.AWS_LAMBDA_PRD]:
+        return _get_lambda_settings()
+    if settings_profile is SettingsProfile.LOCAL:
+        return _get_local_settings()
+    raise NotImplementedError(f"Settings profile {settings_profile} not implemented")
 
 
 @lru_cache()
-def _get_cached_settings():
-    return RepositorySettings()
+def _get_lambda_settings():
+    return RepositorySettings(
+        local_access=True,
+        s3_access=True,
+    )
+
+
+@lru_cache
+def _get_local_settings():
+    return RepositorySettings(
+        local_access=True,
+        s3_access=False,
+    )

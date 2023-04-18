@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from app.repositories.base.validators import assert_in
 from app.s3 import S3AssetBucket
-from app.settings.repository import FileAccess, get_repo_settings
+from app.settings.repository import get_repo_settings
 from app.utils import BASE_DIR
 
 
@@ -47,13 +47,11 @@ class JsonRepository(BaseModel, ABC):
         """Load model from json"""
         settings = get_repo_settings()
 
-        read_permissions = [FileAccess.READ, FileAccess.WRITE]
-
-        if settings.local_access not in read_permissions:
-            raise PermissionError(f"No READ access: settings.local_access = {settings.local_access}")
+        if not settings.local_access:
+            raise PermissionError("No local access")
 
         repo = cls()
-        if (refresh or not repo.json_exists()) and settings.s3_access in read_permissions:
+        if (refresh or not repo.json_exists()) and settings.s3_access:
             repo._download()
 
         if repo.json_exists():
@@ -64,9 +62,9 @@ class JsonRepository(BaseModel, ABC):
     def save(self):
         """Save model to json"""
         settings = get_repo_settings()
-        if settings.local_access is FileAccess.WRITE:
+        if settings.local_access:
             self._write_json_data()
-            if settings.s3_access is FileAccess.WRITE:
+            if settings.s3_access:
                 self._upload()
 
     def _read_json_data(self):

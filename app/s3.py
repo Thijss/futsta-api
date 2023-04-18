@@ -4,7 +4,7 @@ from pathlib import PosixPath
 
 import boto3
 
-from app.settings.repository import FileAccess, get_repo_settings
+from app.settings.repository import get_repo_settings
 
 
 class S3AssetBucket:
@@ -18,7 +18,7 @@ class S3AssetBucket:
         """Download asset from S3 bucket"""
         settings = get_repo_settings()
 
-        if settings.s3_access is FileAccess.NO_ACCESS:
+        if not settings.s3_access:
             logging.warning("Download skipped: S3 access is disabled in settings")
             return
 
@@ -31,7 +31,7 @@ class S3AssetBucket:
         """Upload asset to S3 bucket"""
         settings = get_repo_settings()
 
-        if settings.s3_access is not FileAccess.WRITE:
+        if not settings.s3_access:
             logging.warning("Upload skipped: S3 access is disabled in settings")
             return
 

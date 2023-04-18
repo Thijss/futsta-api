@@ -11,7 +11,7 @@ from app.settings.api import get_api_settings
 def get_app() -> FastAPI:
     """Create the FastAPI application."""
     api_settings = get_api_settings()
-    server = FastAPI(title=api_settings.project_name, debug=api_settings.debug)
+    server = FastAPI(title=api_settings.project_name)
 
     server.include_router(goals.router, prefix="/goals")
     server.include_router(stats.router, prefix="/stats")
