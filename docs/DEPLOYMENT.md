@@ -30,10 +30,10 @@ On the lambda console of your function, head over to 'Configuration -> Environme
 
 - set `API_KEY_READ_ACCESS` to `<a_random_string>`
 - set `API_KEY_WRITE_ACCESS` to `<a_different_random_string>`
-- set `SETTINGS_PROFILE` to `aws_lambda_dev`
+- set `USE_LAMBDA_DEV_SETTINGS` to `true`
 
-Note: The `aws_lambda_dev`-profile is not very restrictive on security.
-You should change this to `aws_lambda_prd` for production.
+Note: The `LAMBDA_DEV_SETTINGS` are not very restrictive on security.
+You should disable this when deploying for production.
 
 
 ### Install the dependencies on your local machine using poetry

@@ -32,20 +32,17 @@ class RepositorySettings(BaseSettings):
 
 def get_repo_settings():
     """Get API settings."""
-    if profile := os.getenv("SETTINGS_PROFILE"):
-        settings_profile = SettingsProfile(profile)
-    else:
-        return RepositorySettings()
+    if os.getenv("USE_LAMBDA_DEV_SETTINGS"):
+        return _get_lambda_dev_settings()
 
-    if settings_profile in [SettingsProfile.AWS_LAMBDA_DEV, SettingsProfile.AWS_LAMBDA_PRD]:
-        return _get_lambda_settings()
-    if settings_profile is SettingsProfile.LOCAL:
-        return _get_local_settings()
-    raise NotImplementedError(f"Settings profile {settings_profile} not implemented")
+    if os.getenv("USE_LRU_CACHED_SETTINGS"):
+        return _get_cached_settings()
+
+    return RepositorySettings()
 
 
 @lru_cache()
-def _get_lambda_settings():
+def _get_lambda_dev_settings():
     return RepositorySettings(
         local_access=True,
         s3_access=True,
@@ -53,8 +50,5 @@ def _get_lambda_settings():
 
 
 @lru_cache
-def _get_local_settings():
-    return RepositorySettings(
-        local_access=True,
-        s3_access=False,
-    )
+def _get_cached_settings():
+    return RepositorySettings()

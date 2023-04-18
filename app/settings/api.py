@@ -63,18 +63,11 @@ class ApiSettings(BaseSettings):
 
 def get_api_settings():
     """Get API settings."""
-    if profile := os.getenv("SETTINGS_PROFILE"):
-        settings_profile = SettingsProfile(profile)
-    else:
-        return ApiSettings()
-
-    if settings_profile is SettingsProfile.AWS_LAMBDA_DEV:
+    if os.getenv("USE_LAMBDA_DEV_SETTINGS"):
         return _get_lambda_dev_settings()
-    if settings_profile is SettingsProfile.AWS_LAMBDA_PRD:
-        return _get_lambda_prd_settings()
-    if settings_profile is SettingsProfile.LOCAL:
-        return _get_local_settings()
-    raise NotImplementedError(f"Settings profile {settings_profile} not implemented")
+    if os.getenv("USE_LRU_CACHED_SETTINGS"):
+        return _get_cached_settings()
+    return ApiSettings()
 
 
 @lru_cache
@@ -89,21 +82,4 @@ def _get_lambda_dev_settings():
         http_allowed_methods=["*"],
         http_allowed_headers=["*"],
         http_allowed_origins=["*"],
-    )
-
-
-@lru_cache
-def _get_lambda_prd_settings():
-    return ApiSettings()
-
-
-@lru_cache
-def _get_local_settings():
-    return ApiSettings(
-        project_name="My local API",
-        http_allowed_methods=["*"],
-        http_allowed_headers=["*"],
-        http_allowed_origins=["*"],
-        api_key_read_access=SecretStr("read"),
-        api_key_write_access=SecretStr("write"),
     )
