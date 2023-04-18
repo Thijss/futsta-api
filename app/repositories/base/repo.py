@@ -28,7 +28,7 @@ class JsonRepository(BaseModel, ABC):
         validators = validators or []
 
         for validator in validators:
-            validator(self, asset)
+            validator(asset, self)
         self.assets.append(asset)
         self.save()
 
@@ -37,7 +37,7 @@ class JsonRepository(BaseModel, ABC):
         validators = validators or []
         validators.append(assert_in)
         for validator in validators:
-            validator(self, asset)
+            validator(asset, self)
 
         self.assets.remove(asset)
         self.save()

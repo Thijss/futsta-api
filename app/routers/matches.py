@@ -7,7 +7,7 @@ from app.models.matches import Match
 from app.repositories.base.validators import assert_in, assert_not_in
 from app.repositories.matches import MatchRepository
 from app.repositories.opponents import OpponentRepository
-from app.routers._helpers import add_or_raise_http_exception
+from app.routers._helpers import add_or_raise_http_exception, remove_or_raise_http_exception
 
 router = APIRouter()
 
@@ -42,10 +42,8 @@ async def add_match(match: Match):
     dependencies=[Depends(api_key_write_access_auth)],
     status_code=status.HTTP_204_NO_CONTENT,
 )
-async def delete_match(match: Match):
+async def remove_match(match: Match):
     """Delete a match."""
-    try:
-        MatchRepository.load().remove(match)
-    except NotFoundError as error:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+    repo = MatchRepository.load()
+    remove_or_raise_http_exception(repo, match, [])
     return match

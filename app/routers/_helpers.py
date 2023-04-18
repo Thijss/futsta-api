@@ -16,3 +16,15 @@ def add_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validato
     except PermissionError as error:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": str(error)}]) from error
     return asset
+
+
+def remove_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validators: list):
+    """Remove asset from repository"""
+
+    try:
+        repo.remove(asset, validators=validators)
+    except ValidationError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=[{"msg": str(error)}]) from error
+    except PermissionError as error:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": str(error)}]) from error
+    return asset
