@@ -1,5 +1,6 @@
 """S3 bucket for assets"""
 import logging
+from pathlib import PosixPath
 
 import boto3
 
@@ -13,7 +14,7 @@ class S3AssetBucket:
         self.s3_client = boto3.client("s3")
         self.bucket_name = bucket_name
 
-    def download_asset(self, file_name: str):
+    def download_asset(self, file_name: PosixPath):
         """Download asset from S3 bucket"""
         settings = get_repo_settings()
 
@@ -26,7 +27,7 @@ class S3AssetBucket:
 
         self.s3_client.download_file(self.bucket_name, s3_path, local_path)
 
-    def upload_asset(self, file_name: str):
+    def upload_asset(self, file_name: PosixPath):
         """Upload asset to S3 bucket"""
         settings = get_repo_settings()
 
