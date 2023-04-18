@@ -6,14 +6,14 @@ Checkout [DEPLOYMENT](docs/DEPLOYMENT.md) for a detailed guide on how to deploy 
 
 
 ## Local installation
-The project's Python version is currently locked to python 3.9 to keep it compatible with AWS Lambda. 
-If you want to run the API locally, you need to have python 3.9 installed.
+The project's Python version is currently locked to python 3.10 to keep it compatible with AWS Lambda. 
+If you want to run the API locally, you need to have python 3.10 installed.
 
 If you do not plan to deploy the API on AWS Lambda, you can update the python version constraint in `pyproject.toml` and use any python version >= 3.6.
 
 ### Install dependencies
 ```
-poetry env use 3.9
+poetry env use 3.10
 poetry install
 ```
 

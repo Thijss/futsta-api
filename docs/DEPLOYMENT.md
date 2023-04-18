@@ -6,7 +6,7 @@ If you do not want to use AWS S3, you can skip the final section about linking t
 ## Setting up the API on your AWS account
 
 Prerequisites:
-- Python 3.9 on your local machine (AWS Lambda runs on Python 3.9)
+- Python 3.9/3.10 on your local machine (AWS Lambda runs on Python 3.9/3.10)
 - poetry installed (https://python-poetry.org/)
 - AWS Account (https://aws.amazon.com/)
 - AWS CLI installed (https://aws.amazon.com/cli/). Alternatively you can do everything manually on the [AWS console](https://console.aws.amazon.com/).
@@ -19,7 +19,7 @@ Create a Lambda function on your AWS account to run the API.
 You can use the console to create your lambda function. This will automatically link a AWSLambdaBasicExecutionRole to it.
 
 After creation, alter the following for your lambda function:
-- Set Runtime to `Python 3.9` (Code > Runtime Settings)
+- Set Runtime to `Python 3.10` (Code > Runtime Settings)
 - Set the Runtime Handler to `app.main.handler` (Code > Runtime Settings)
 - Enable function URL with Auth type `NONE` (Configuration > Function URL)
   - Explanation: authentication will be done by FastAPI
@@ -37,9 +37,9 @@ You should disable this when deploying for production.
 
 
 ### Install the dependencies on your local machine using poetry
-Create a python 3.9 environment:
+Create a python 3.10 environment:
 ```
-poetry env use 3.9
+poetry env use 3.10
 ```
 Then install the dependencies:
 ```
