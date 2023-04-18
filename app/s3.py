@@ -1,6 +1,7 @@
 """S3 bucket for assets"""
 import logging
-from pathlib import PosixPath
+from pathlib import Path
+from typing import Optional
 
 import boto3
 
@@ -10,11 +11,11 @@ from app.settings.repository import get_repo_settings
 class S3AssetBucket:
     """S3 bucket for assets"""
 
-    def __init__(self, bucket_name: str):
-        self.s3_client = boto3.client("s3")
+    def __init__(self, bucket_name: str, client: Optional[boto3.client] = None):
+        self.s3_client = client or boto3.client("s3")
         self.bucket_name = bucket_name
 
-    def download_asset(self, file_name: PosixPath):
+    def download_asset(self, file_name: str):
         """Download asset from S3 bucket"""
         settings = get_repo_settings()
 
@@ -27,7 +28,7 @@ class S3AssetBucket:
 
         self.s3_client.download_file(self.bucket_name, s3_path, local_path)
 
-    def upload_asset(self, file_name: PosixPath):
+    def upload_asset(self, file_name: str):
         """Upload asset to S3 bucket"""
         settings = get_repo_settings()
 
