@@ -6,7 +6,7 @@ from starlette import status
 from app.auth import api_key_read_access_auth, api_key_write_access_auth
 from app.exceptions import NotFoundError, ValidationError
 from app.models.goals import Goal
-from app.repositories.base.validators import assert_not_in, assert_in
+from app.repositories.base.validators import assert_in, assert_not_in
 from app.repositories.goals import (
     GoalRepository,
     validate_goal_for_away_match,
