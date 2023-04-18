@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from starlette import status
 
 from app.auth import api_key_read_access_auth, api_key_write_access_auth
-from app.exceptions import AlreadyExistsError
 from app.models.players import Player
 from app.repositories.base.validators import assert_not_in
 from app.repositories.players import PlayerRepository
+from app.routers._helpers import add_or_raise_http_exception
 
 router = APIRouter()
 
@@ -18,10 +18,7 @@ router = APIRouter()
 async def add_player(player: Player):
     """Add a player."""
     repo = PlayerRepository.load()
-    try:
-        repo.add(player, validators=[assert_not_in])
-    except AlreadyExistsError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+    add_or_raise_http_exception(repo, player, [assert_not_in])
     return player
 
 

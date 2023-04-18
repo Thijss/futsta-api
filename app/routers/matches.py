@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 
 from app.auth import api_key_read_access_auth, api_key_write_access_auth
-from app.exceptions import AlreadyExistsError, NotFoundError
+from app.exceptions import NotFoundError
 from app.models.matches import Match
-from app.repositories.base.validators import assert_in
+from app.repositories.base.validators import assert_in, assert_not_in
 from app.repositories.matches import MatchRepository
 from app.repositories.opponents import OpponentRepository
+from app.routers._helpers import add_or_raise_http_exception
 
 router = APIRouter()
 
@@ -31,10 +32,8 @@ async def add_match(match: Match):
     except NotFoundError as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
 
-    try:
-        MatchRepository.load().add(match)
-    except AlreadyExistsError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+    match_repo = MatchRepository.load()
+    add_or_raise_http_exception(match_repo, match, [assert_not_in])
     return match
 
 

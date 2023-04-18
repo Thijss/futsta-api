@@ -16,6 +16,7 @@ from app.repositories.goals import (
 )
 from app.repositories.matches import MatchRepository
 from app.repositories.players import PlayerRepository
+from app.routers._helpers import add_or_raise_http_exception
 
 router = APIRouter()
 
@@ -55,10 +56,7 @@ async def add_goal(goal: Goal):
     else:
         validators.append(validate_goal_for_away_match)
 
-    try:
-        goal_repo.add(goal, validators=validators)
-    except ValidationError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=[{"msg": str(error)}]) from error
+    add_or_raise_http_exception(goal_repo, goal, validators)
     return goal
 
 

@@ -6,7 +6,7 @@ from functools import lru_cache
 from pydantic import BaseSettings
 
 
-class S3Access(Enum):
+class FileAccess(Enum):
     """S3 access."""
 
     NO_ACCESS = "no_access"
@@ -23,8 +23,9 @@ class RepositorySettings(BaseSettings):
         return os.linesep.join(lines)
 
     local_assets_dir: str = "assets"
+    local_access: FileAccess = FileAccess.NO_ACCESS
     s3_assets_dir: str = "assets"
-    s3_access: S3Access = S3Access.NO_ACCESS
+    s3_access: FileAccess = FileAccess.NO_ACCESS
     s3_bucket_name: str = ""
 
     # pylint: disable=too-few-public-methods

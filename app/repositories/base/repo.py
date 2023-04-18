@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from app.repositories.base.validators import assert_in
 from app.s3 import S3AssetBucket
-from app.settings.repository import RepositorySettings, S3Access, get_repo_settings
+from app.settings.repository import RepositorySettings, FileAccess, get_repo_settings
 from app.utils import BASE_DIR
 
 
@@ -45,12 +45,16 @@ class JsonRepository(BaseModel, ABC):
     @classmethod
     def load(cls, refresh: bool = False):
         """Load model from json"""
+        settings = get_repo_settings()
+
+        read_permissions = [FileAccess.READ, FileAccess.WRITE]
+
+        if settings.local_access not in read_permissions:
+            raise PermissionError(f"No READ access: settings.local_access = {settings.local_access}")
+
         repo = cls()
-        if (refresh or not repo.json_exists()) and get_repo_settings().s3_access in [
-            S3Access.WRITE,
-            S3Access.READ,
-        ]:
-            repo._download(settings=get_repo_settings())
+        if (refresh or not repo.json_exists()) and settings.s3_access in read_permissions:
+            repo._download()
 
         if repo.json_exists():
             json_data = repo._read_json_data()
@@ -59,10 +63,11 @@ class JsonRepository(BaseModel, ABC):
 
     def save(self):
         """Save model to json"""
-        self._write_json_data()
         settings = get_repo_settings()
-        if settings.s3_access is S3Access.WRITE:
-            self._upload(settings)
+        if settings.local_access is FileAccess.WRITE:
+            self._write_json_data()
+            if settings.s3_access is FileAccess.WRITE:
+                self._upload()
 
     def _read_json_data(self):
         with open(self.local_json_file, "r", encoding="utf-8") as infile:
@@ -73,11 +78,13 @@ class JsonRepository(BaseModel, ABC):
         with open(self.local_json_file, "w", encoding="utf-8") as outfile:
             outfile.write(self.json(indent=4))
 
-    def _upload(self, settings: RepositorySettings):
+    def _upload(self):
+        settings = get_repo_settings()
         s3_bucket = S3AssetBucket(bucket_name=settings.s3_bucket_name)
         s3_bucket.upload_asset(self.Config.json_file_name)
 
-    def _download(self, settings: RepositorySettings):
+    def _download(self):
+        settings = get_repo_settings()
         s3_bucket = S3AssetBucket(bucket_name=settings.s3_bucket_name)
         s3_bucket.download_asset(self.Config.json_file_name)
 
