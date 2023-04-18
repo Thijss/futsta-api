@@ -18,7 +18,8 @@ jobs:
       - run: poetry install
       - run: poetry run pycodestyle .
       - run: poetry run black --check .
+      - run: poetry run isort --check .
       - name: pylint
         run: poetry run pylint */
-      - run: poetry run coverage run --source='.' -m pytest
+      - run: poetry run coverage run --source='app' -m pytest
       - run: poetry run coverage report
