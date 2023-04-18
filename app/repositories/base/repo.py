@@ -21,7 +21,7 @@ class JsonRepository(BaseModel, ABC):
     class Config:
         """Pydantic config"""
 
-        json_file_name: PosixPath
+        json_file_name: str
 
     def add(self, asset: BaseModel, validators: Optional[set[callable]] = None):
         """Add asset to repository"""
@@ -75,7 +75,7 @@ class JsonRepository(BaseModel, ABC):
     def local_json_file(self) -> Path:
         """Get local json file path"""
         settings = get_repo_settings()
-        return BASE_DIR / settings.local_assets_dir / self.Config.json_file_name
+        return settings.local_assets_dir / self.Config.json_file_name
 
     def _validate(self, asset: BaseModel, validators: set[callable]):
         """Validate asset"""
