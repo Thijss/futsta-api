@@ -3,7 +3,7 @@ from app.models.goals import Goal, Score
 from app.repositories.base.validators import assert_in
 from app.repositories.goals.repo import GoalRepository
 from app.repositories.players import PlayerRepository
-from app.repositories.matches import MatchRepository
+from app.repositories.matches.repo import MatchRepository
 
 
 def validate_involved_players(goal, *_args):

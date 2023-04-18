@@ -1,10 +1,9 @@
 """Validators for repositories."""
 from typing import TYPE_CHECKING
 
-from astroid import NotFoundError
 from pydantic import BaseModel
 
-from app.exceptions import AlreadyExistsError
+from app.exceptions import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
     from app.repositories.base.repo import JsonRepository

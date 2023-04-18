@@ -1,10 +1,11 @@
 """Repository settings."""
 import os
 from functools import lru_cache
+from pathlib import PosixPath
 
 from pydantic import BaseSettings
 
-from app.settings._enums import SettingsProfile
+from app.utils import BASE_DIR
 
 
 class RepositorySettings(BaseSettings):
@@ -15,7 +16,7 @@ class RepositorySettings(BaseSettings):
         lines = ["---------- SETTINGS ----------"] + setting_list
         return os.linesep.join(lines)
 
-    local_assets_dir: str = "assets"
+    local_assets_dir: PosixPath = BASE_DIR / "assets"
     local_access: bool = False
     s3_assets_dir: str = "assets"
     s3_access: bool = False

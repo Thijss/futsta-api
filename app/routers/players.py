@@ -18,7 +18,7 @@ router = APIRouter()
 async def add_player(player: Player):
     """Add a player."""
     repo = PlayerRepository.load()
-    add_or_raise_http_exception(repo, player, [assert_not_in])
+    add_or_raise_http_exception(repo, player, {assert_not_in})
     return player
 
 

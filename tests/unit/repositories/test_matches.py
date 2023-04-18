@@ -4,20 +4,13 @@ from datetime import date
 import pytest
 
 from app.exceptions import NotFoundError
-from app.models.matches import Match
-from app.models.opponents import Opponent
-from app.repositories.matches import MatchRepository
+from app.repositories.matches.repo import MatchRepository
 
 
-@pytest.fixture(name="match")
-def match_fixture():
-    return Match(match_date=date(2023, 4, 18), opponent=Opponent(name="TestOpponent"), is_home=True)
-
-
-def test_match_repository_get_by_match_date(match):
+def test_match_repository_get_by_match_date(home_match):
     match_repo = MatchRepository()
 
-    match_repo.assets = [match]
+    match_repo.assets = [home_match]
 
     # test get by match date with valid data
     match = match_repo.get_by_match_date(date(2023, 4, 18))

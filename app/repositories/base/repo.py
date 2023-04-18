@@ -23,21 +23,21 @@ class JsonRepository(BaseModel, ABC):
 
         json_file_name: PosixPath
 
-    def add(self, asset: BaseModel, validators: Optional[list[callable]] = None):
+    def add(self, asset: BaseModel, validators: Optional[set[callable]] = None):
         """Add asset to repository"""
         validators = validators or []
 
-        for validator in validators:
-            validator(asset, self)
+        self._validate(asset, validators)
+
         self.assets.append(asset)
         self.save()
 
-    def remove(self, asset: BaseModel, validators: Optional[list[callable]] = None):
+    def remove(self, asset: BaseModel, validators: Optional[set[callable]] = None):
         """Remove asset from repository"""
-        validators = validators or []
-        validators.append(assert_in)
-        for validator in validators:
-            validator(asset, self)
+        validators = validators or set()
+        validators.add(assert_in)
+
+        self._validate(asset, validators)
 
         self.assets.remove(asset)
         self.save()
@@ -67,6 +67,21 @@ class JsonRepository(BaseModel, ABC):
             if settings.s3_access:
                 self._upload()
 
+    def json_exists(self):
+        """Check if json file exists"""
+        return Path(self.local_json_file).exists()
+
+    @property
+    def local_json_file(self) -> Path:
+        """Get local json file path"""
+        settings = get_repo_settings()
+        return BASE_DIR / settings.local_assets_dir / self.Config.json_file_name
+
+    def _validate(self, asset: BaseModel, validators: set[callable]):
+        """Validate asset"""
+        for validator in validators:
+            validator(asset, self)
+
     def _read_json_data(self):
         with open(self.local_json_file, "r", encoding="utf-8") as infile:
             return json.load(infile)
@@ -85,13 +100,3 @@ class JsonRepository(BaseModel, ABC):
         settings = get_repo_settings()
         s3_bucket = S3AssetBucket(bucket_name=settings.s3_bucket_name)
         s3_bucket.download_asset(self.Config.json_file_name)
-
-    def json_exists(self):
-        """Check if json file exists"""
-        return Path(self.local_json_file).exists()
-
-    @property
-    def local_json_file(self) -> Path:
-        """Get local json file path"""
-        settings = get_repo_settings()
-        return BASE_DIR / settings.local_assets_dir / self.Config.json_file_name

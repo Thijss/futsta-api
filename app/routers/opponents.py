@@ -18,7 +18,7 @@ router = APIRouter()
 async def add_opponent(opponent: Opponent):
     """Add an opponent."""
     repo = OpponentRepository.load()
-    add_or_raise_http_exception(repo, opponent, [assert_not_in])
+    add_or_raise_http_exception(repo, opponent, {assert_not_in})
     return opponent
 
 

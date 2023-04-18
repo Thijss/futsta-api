@@ -33,11 +33,11 @@ async def add_goal(goal: Goal):
     """Add a goal."""
     goal_repo = GoalRepository.load()
 
-    validators = [
+    validators = {
         validate_involved_players,
         validate_subsequent_goal,
         validate_score,
-    ]
+    }
 
     add_or_raise_http_exception(goal_repo, goal, validators)
     return goal
@@ -47,5 +47,5 @@ async def add_goal(goal: Goal):
 async def remove_goal(goal: Goal):
     """Remove a goal."""
     repo = GoalRepository.load()
-    remove_or_raise_http_exception(repo, goal, [validate_is_last_goal])
+    remove_or_raise_http_exception(repo, goal, {validate_is_last_goal})
     return goal

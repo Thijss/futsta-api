@@ -6,7 +6,7 @@ from app.exceptions import ValidationError
 from app.repositories.base.repo import JsonRepository
 
 
-def add_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validators: list):
+def add_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validators: set[callable]):
     """Add asset to repository"""
 
     try:
@@ -18,7 +18,7 @@ def add_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validato
     return asset
 
 
-def remove_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validators: list):
+def remove_or_raise_http_exception(repo: JsonRepository, asset: BaseModel, validators: set[callable]):
     """Remove asset from repository"""
 
     try:
