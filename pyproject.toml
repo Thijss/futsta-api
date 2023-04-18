@@ -7,17 +7,17 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.95.0"
+fastapi = "^0.95.1"
 uvicorn = {extras = ["standard"], version = "^0.21.1"}
 mangum = "^0.17.0"
-boto3 = "^1.26.99"
+boto3 = "^1.26.115"
 python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.1.0"
-pylint = "^2.17.1"
-pytest = "^7.3.0"
+black = "^23.3.0"
+pylint = "^2.17.2"
+pytest = "^7.3.1"
 httpx = "^0.24.0"
 coverage = "^7.2.3"
 pycodestyle = "^2.10.0"
