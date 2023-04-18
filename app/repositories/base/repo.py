@@ -1,7 +1,7 @@
 """Base class for repositories"""
 import json
 from abc import ABC
-from pathlib import Path, PosixPath
+from pathlib import Path
 from typing import Optional
 
 from pydantic import BaseModel
@@ -9,7 +9,6 @@ from pydantic import BaseModel
 from app.repositories.base.validators import assert_in
 from app.s3 import S3AssetBucket
 from app.settings.repository import get_repo_settings
-from app.utils import BASE_DIR
 
 
 class JsonRepository(BaseModel, ABC):
