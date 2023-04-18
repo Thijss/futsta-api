@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from app.models.goals import CountType
 from app.models.players import Player
-from app.repositories.goals import GoalRepository
+from app.repositories.goals.repo import GoalRepository
 from app.repositories.players import PlayerRepository
 
 

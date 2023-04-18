@@ -1,13 +1,9 @@
 from collections import Counter
 from datetime import date
-from typing import Optional
 
 from app.models.goals import CountType, Goal, Score
 from app.models.matches import Match
 from app.repositories.base.repo import JsonRepository
-from app.repositories.base.validators import assert_in
-from matches import MatchRepository
-from players import PlayerRepository
 
 
 class GoalRepository(JsonRepository):
@@ -58,4 +54,3 @@ class GoalRepository(JsonRepository):
         counter = Counter([getattr(goal, attr) for goal in self.assets])
         counter.pop(None)
         return counter
-

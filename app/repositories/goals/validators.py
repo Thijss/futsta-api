@@ -7,6 +7,7 @@ from app.repositories.matches import MatchRepository
 
 
 def validate_involved_players(goal, *_args):
+    """Validate that the players involved in the goal are in the player repository"""
     player_repo = PlayerRepository.load()
     if scoring_player := goal.scored_by:
         assert_in(player_repo, scoring_player)
@@ -33,16 +34,17 @@ def validate_is_last_goal(goal: Goal, repo: GoalRepository):
         raise ValidationError("Not the last goal in the match")
 
 
-def validate_score(goal: Goal, repo: GoalRepository):
+def validate_score(goal: Goal, goal_repo: GoalRepository):
+    """Validate that the goal is added to the correct side of the score."""
     match_repo = MatchRepository.load()
     match = match_repo.get_by_match_date(goal.match_date)
     if goal.score is None:
-        goal.score = repo.get_next_score(goal, match)
+        goal.score = goal_repo.get_next_score(goal, match)
 
     if match.is_home:
-        _validate_goal_for_home_match(goal, repo)
+        _validate_goal_for_home_match(goal, goal_repo)
     else:
-        _validate_goal_for_away_match(goal, repo)
+        _validate_goal_for_away_match(goal, goal_repo)
 
 
 def _validate_goal_for_away_match(goal: Goal, repo: GoalRepository):
@@ -78,5 +80,3 @@ def _get_score_changes(goal: Goal, repo: GoalRepository) -> tuple[bool, bool]:
     same_right = goal.score.away == previous_score.away
 
     return same_left, same_right
-
-

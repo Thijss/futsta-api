@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import BaseModel, validator
 
@@ -43,8 +43,8 @@ class Goal(BaseModel):
     """A goal scored in a match"""
 
     match_date: date
-    scored_by: Optional[Player] = None
-    assisted_by: Optional[Player] = None
+    scored_by: Optional[Union[Player, str]] = None
+    assisted_by: Optional[Union[Player, str]] = None
     score: Optional[Score] = None
 
     @property
