@@ -20,6 +20,7 @@ class _MyJsonRepo(JsonRepository):
 
     class Config:
         """Pydantic config"""
+
         json_file_name = "test.json"
 
 
