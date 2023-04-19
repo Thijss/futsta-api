@@ -83,7 +83,7 @@ aws s3 mb s3://<your_unique_bucket_name>
 On the lambda console of your function, head over to 'Configuration -> Environment variables' and add the following:
 
 - set `S3_BUCKET_NAME` to `<your_unique_bucket_name>`
-
+- set `LOCAL_ASSETS_DIR` to `/tmp`
 
 ### Extending the linked IAM role with S3 permissions
 Next, head to 'Configuration > Permissions' and click the link to the IAM role.
