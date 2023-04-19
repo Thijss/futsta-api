@@ -82,8 +82,6 @@ aws s3 mb s3://<your_unique_bucket_name>
 ### Extra environment variables for your lambda function
 On the lambda console of your function, head over to 'Configuration -> Environment variables' and add the following:
 
-- set `LOCAL_ACCESS` to `write`
-- set `S3_ACCESS` to `write`
 - set `S3_BUCKET_NAME` to `<your_unique_bucket_name>`
 
 
