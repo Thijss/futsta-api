@@ -50,8 +50,7 @@ class JsonRepository(BaseModel, ABC):
             raise PermissionError("No local access")
 
         repo = cls()
-        if (refresh or not repo.json_exists()) and settings.s3_access:
-            repo._download()
+        repo._download()
 
         if repo.json_exists():
             json_data = repo._read_json_data()
@@ -63,8 +62,7 @@ class JsonRepository(BaseModel, ABC):
         settings = get_repo_settings()
         if settings.local_access:
             self._write_json_data()
-            if settings.s3_access:
-                self._upload()
+            self._upload()
 
     def json_exists(self):
         """Check if json file exists"""
