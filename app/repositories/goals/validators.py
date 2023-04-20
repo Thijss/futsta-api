@@ -38,8 +38,6 @@ def validate_score(goal: Goal, goal_repo: GoalRepository):
     """Validate that the goal is added to the correct side of the score."""
     match_repo = MatchRepository.load()
     match = match_repo.get_by_match_date(goal.match_date)
-    if goal.score is None:
-        goal.score = goal_repo.get_next_score(goal, match)
 
     if match.is_home:
         _validate_goal_for_home_match(goal, goal_repo)

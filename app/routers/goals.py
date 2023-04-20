@@ -12,6 +12,7 @@ from app.repositories.goals.validators import (
     validate_score,
     validate_subsequent_goal,
 )
+from app.repositories.matches.repo import MatchRepository
 from app.routers._helpers import (
     add_or_raise_http_exception,
     remove_or_raise_http_exception,
@@ -35,6 +36,11 @@ async def get_by_match_date(match_date: date):
 async def add_goal(goal: Goal):
     """Add a goal."""
     goal_repo = GoalRepository.load()
+
+    match_repo = MatchRepository.load()
+    match = match_repo.get_by_match_date(goal.match_date)
+    if goal.score is None:
+        goal.score = goal_repo.get_next_score(goal, match)
 
     validators = {
         validate_involved_players,
