@@ -8,13 +8,15 @@ import pytest
 
 from app.exceptions import ValidationError
 from app.models.goals import Goal, Score
+from app.models.players import Player
 from app.repositories.goals import validators
 from app.repositories.goals.validators import (
-    validate_is_last_goal,
+    validate_involved_players, validate_is_last_goal,
     validate_score,
     validate_subsequent_goal,
 )
 from app.repositories.matches.repo import MatchRepository
+from app.repositories.players import PlayerRepository
 
 
 def test_validate_score_for_away_match_raises_error_both_change(away_repo, away_match):
@@ -166,3 +168,41 @@ def test_validate_is_last_goal_does_not_raise_error(away_repo):
         score=Score(home=0, away=2),
     )
     validate_is_last_goal(last_goal, away_repo)
+
+
+def test_validate_involved_players_raises_error():
+    goal = Goal(
+        match_date=datetime.now().date(),
+        scored_by="John",
+        assisted_by=None,
+        score=Score(home=2, away=0),
+    )
+
+    player_1 = Player(name="Bill")
+
+    player_repo = PlayerRepository()
+    player_repo.assets = [player_1]
+
+    with patch.object(validators.PlayerRepository, "load", return_value=player_repo):
+        with pytest.raises(ValidationError) as error:
+            validate_involved_players(goal)
+
+    assert "A player named John does not exist" in str(error.value)
+
+
+def test_validate_involved_players_does_not_raises_error():
+    goal = Goal(
+        match_date=datetime.now().date(),
+        scored_by="John",
+        assisted_by=None,
+        score=Score(home=2, away=0),
+    )
+
+    player_1 = Player(name="John")
+
+    player_repo = PlayerRepository()
+    player_repo.assets = [player_1]
+
+    with patch.object(validators.PlayerRepository, "load", return_value=player_repo):
+        validate_involved_players(goal)
+

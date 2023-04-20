@@ -10,9 +10,9 @@ def validate_involved_players(goal, *_args):
     """Validate that the players involved in the goal are in the player repository"""
     player_repo = PlayerRepository.load()
     if scoring_player := goal.scored_by:
-        assert_in(player_repo, scoring_player)
+        assert_in(scoring_player, player_repo)
     if assisting_player := goal.assisted_by:
-        assert_in(player_repo, assisting_player)
+        assert_in(assisting_player, player_repo)
 
 
 def validate_subsequent_goal(goal: Goal, repo: GoalRepository):
