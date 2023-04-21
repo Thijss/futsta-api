@@ -11,7 +11,8 @@ from app.models.goals import Goal, Score
 from app.models.players import Player
 from app.repositories.goals import validators
 from app.repositories.goals.validators import (
-    validate_involved_players, validate_is_last_goal,
+    validate_involved_players,
+    validate_is_last_goal,
     validate_score,
     validate_subsequent_goal,
 )
@@ -205,4 +206,3 @@ def test_validate_involved_players_does_not_raises_error():
 
     with patch.object(validators.PlayerRepository, "load", return_value=player_repo):
         validate_involved_players(goal)
-

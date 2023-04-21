@@ -42,7 +42,7 @@ class JsonRepository(BaseModel, ABC):
         self.save()
 
     @classmethod
-    def load(cls, refresh: bool = False):
+    def load(cls):
         """Load model from json"""
         settings = get_repo_settings()
 
