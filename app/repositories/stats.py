@@ -1,3 +1,4 @@
+import random
 from typing import Union
 
 from pydantic import BaseModel
@@ -37,6 +38,18 @@ class StatRepository(BaseModel):
         counter_class = cls.get_counter_class(count_type)
         repo = cls(stats=[counter_class(player=player, count=count) for player, count in player_counts.items()])
         repo.stats = sorted(repo.stats, key=lambda stat: stat.count, reverse=True)
+        return repo
+
+    @classmethod
+    def create_dummy(cls, count_type: CountType):
+        """Create a dummy repository of stats"""
+        counter_class = cls.get_counter_class(count_type)
+
+        players = PlayerRepository.load().assets
+
+        stats = [counter_class(player=player, count=-1) for player in players]
+        random.shuffle(stats)
+        repo = cls(stats=stats)
         return repo
 
     @staticmethod

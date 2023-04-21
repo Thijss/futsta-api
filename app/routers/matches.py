@@ -12,6 +12,7 @@ from app.routers._helpers import (
     add_or_raise_http_exception,
     remove_or_raise_http_exception,
 )
+from app.settings.api import get_api_settings
 
 router = APIRouter()
 
@@ -23,7 +24,8 @@ async def list_matches(access_level: Annotated[AccessLevel, Depends(api_key_read
 
     matches.sort(reverse=True)
 
-    if access_level is AccessLevel.READ:
+    settings = get_api_settings()
+    if access_level is AccessLevel.READ and settings.hide_spoilers:
         return matches[:5]
     return matches
 

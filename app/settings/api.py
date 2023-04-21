@@ -31,6 +31,7 @@ class ApiSettings(BaseSettings):
 
     api_key_read_access: SecretStr = SecretStr("")
     api_key_write_access: SecretStr = SecretStr("")
+    hide_spoilers: bool = False
 
     http_allowed_methods: list[str] = []
     http_allowed_headers: list[str] = []
