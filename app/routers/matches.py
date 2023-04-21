@@ -1,7 +1,9 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from app.auth import api_key_read_access_auth, api_key_write_access_auth
+from app.auth import AccessLevel, api_key_read_access_auth, api_key_write_access_auth
 from app.models.matches import Match
 from app.repositories.base.validators import assert_not_in
 from app.repositories.matches.repo import MatchRepository
@@ -14,11 +16,15 @@ from app.routers._helpers import (
 router = APIRouter()
 
 
-@router.get("", dependencies=[Depends(api_key_read_access_auth)])
-async def list_matches():
+@router.get("")
+async def list_matches(access_level: Annotated[AccessLevel, Depends(api_key_read_access_auth)]):
     """List all matches."""
     matches = MatchRepository.load().assets
-    matches.sort()
+
+    matches.sort(reverse=True)
+
+    if access_level is AccessLevel.READ:
+        return matches[:5]
     return matches
 
 
