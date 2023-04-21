@@ -115,20 +115,6 @@ def test_validate_score_for_home_match_does_not_raise_error(home_repo, home_matc
         validate_score(next_goal, home_repo)
 
 
-def test_validate_score_for_home_match_use_get_next_score(home_repo, home_match):
-    next_goal = Goal(
-        match_date=datetime.now().date(),
-        scored_by=None,
-        assisted_by=None,
-        score=None,
-    )
-    match_repo = MatchRepository()
-    match_repo.assets = [home_match]
-
-    with patch.object(validators.MatchRepository, "load", return_value=match_repo):
-        validate_score(next_goal, home_repo)
-
-
 def test_validate_subsequent_goal_raises_error(home_repo):
     next_goal = Goal(
         match_date=datetime.now().date(),

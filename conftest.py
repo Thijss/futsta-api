@@ -55,10 +55,10 @@ def away_repo_fixture(away_goal):
 @pytest.fixture(name="away_match")
 def away_match_fixture():
     """Fixture for an away match"""
-    return Match(match_date=date(2023, 4, 18), opponent=Opponent(name="TestOpponent"), is_home=False)
+    return Match(match_date=datetime.now().date(), opponent=Opponent(name="TestOpponent"), is_home=False)
 
 
 @pytest.fixture(name="home_match")
 def home_match_fixture():
     """Fixture for a home match"""
-    return Match(match_date=date(2023, 4, 18), opponent=Opponent(name="TestOpponent"), is_home=True)
+    return Match(match_date=datetime.now().date(), opponent=Opponent(name="TestOpponent"), is_home=True)
